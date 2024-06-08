@@ -1,7 +1,9 @@
+#! /usr/bin/env node
 import inquirer from "inquirer";
 import chalk from "chalk";
 import readline from "readline";
 import { User } from "./user.js";
+import { pre_test } from "./pre_test.js";
 class SignUp {
     static async signUp() {
         const signInData = await inquirer.prompt([
@@ -84,7 +86,7 @@ async function runApplication() {
         const { action } = await inquirer.prompt([
             {
                 name: "action",
-                message: chalk.bold.italic.cyanBright("Would you like to Signup, Login, or logOut"),
+                message: chalk.bold.italic.cyanBright("Would you like to Signup, Login, or logOut\n"),
                 type: "list",
                 choices: ["Signup", "User Login", "LogOut"],
             },
@@ -93,7 +95,7 @@ async function runApplication() {
             case "Signup":
                 const newUser = await SignUp.signUp();
                 users.push(newUser);
-                console.log(chalk.bold.italic.magentaBright("\nSignup Successful ✅"));
+                console.log(chalk.bold.italic.magentaBright("\nSignup Successful ✅\n"));
                 break;
             case "User Login":
                 const loggedInUser = await SignUp.login(users);
@@ -116,8 +118,7 @@ class TypingTest {
     }
     async runTest() {
         console.log(chalk.bold.italic.blueBright(`You must write the sentence within ${this.timeLimit / 60} Seconds.`));
-        //await sleep(1000)
-        console.log(chalk.bold.italic.magentaBright(`\n\tSentence to write: '${this.testText}'`));
+        await console.log(chalk.bold.italic.magentaBright(`\n\tSentence to write: '${this.testText}'`));
         const userText = await this.takeTest();
         this.Test(userText);
     }
@@ -149,7 +150,7 @@ class TypingTest {
             console.log(chalk.bold.italic.magentaBright("\nVery good👍 You typed the correct sentence."));
             const wordsCount = this.testText.trim().split(" ").length;
             console.log(chalk.bold.italic.magentaBright("\n\tYour word count is: ", wordsCount));
-            console.log(chalk.blue(`\nCorrect the sentence with a word count of ${wordsCount}`));
+            console.log(chalk.bold.italic.blueBright(`\nCorrect the sentence with a word count of ${wordsCount}`));
         }
         else {
             console.log(chalk.bold.italic.redBright("Your sentence is incorrect❌"));
@@ -184,4 +185,8 @@ async function selectLevel() {
             break;
     }
 }
-runApplication();
+async function runPretest() {
+    await pre_test();
+    await runApplication();
+}
+runPretest();

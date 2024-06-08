@@ -1,9 +1,10 @@
 {
-  "name": "project-typing-speed-tester(wpm)",
-  "version": "1.0.0",
+  "name": "project-typing-speed-tester-wpm",
+  "version": "1.0.2",
   "description": "",
-  "main": "pre_test.js",
+  "main": "main.js",
 	"type": "module",
+	"bin": "main.js",
   "dependencies": {
     "chalk": "^5.3.0",
     "inquirer": "^9.2.23"

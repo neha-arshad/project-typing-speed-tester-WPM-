@@ -155,12 +155,11 @@ timeLimit: any;
 
   async runTest() {
     console.log(chalk.bold.italic.blueBright(
-			`You must write the sentence within ${this.timeLimit / 60} Seconds.`));
-			await  
+			`You must write the sentence within ${this.timeLimit / 60 } mintue.`)); 
 
     console.log(chalk.bold.italic.magentaBright(`\n\tSentence to write: '${this.testText}'`));
-    const userText = await this.takeTest();
-    this.Test(userText);
+    const {userText, duration}:any = await this.takeTest();
+    this.Test(userText, duration);
   }
 
   async takeTest() {
@@ -176,7 +175,7 @@ timeLimit: any;
       const timer = setTimeout(() => {
         test.close();
         console.log(chalk.bold.italic.redBright("Time's up!❌ Test ended."));
-        res("");
+        res({userText: "", duration: this.timeLimit});
       },
 			 this.timeLimit * 1000);
 
@@ -188,12 +187,12 @@ timeLimit: any;
         const duration = (endTime.getTime() - startTime.getTime()) / 1000;
         console.log(chalk.bold.italic.blue(`\nYou typed the sentence in ${duration} seconds.`)
         );
-        res(answer);
+        res({userText:answer, duration});
       });
     });
   }
 	
-	Test(userText:any) {
+	Test(userText:any, duration:any) {
     if (this.testText.trim() === userText.trim()) {
 			console.log(chalk.bold.italic.magentaBright("\nVery good👍 You typed the correct sentence."));
 
@@ -201,6 +200,9 @@ timeLimit: any;
 			console.log(chalk.bold.italic.magentaBright("\n\tYour word count is: ", wordsCount));
 
 			console.log(chalk.bold.italic.blueBright(`\nCorrect the sentence with a word count of ${wordsCount}`));
+
+			const WPM = (wordsCount / duration ) * 60;
+			console.log(chalk.bold.italic.blueBright(`\n\tYour WPM is : ${WPM.toFixed(2)} words per seconds...\n`));
     } 
 		else {
 			console.log(chalk.bold.italic.redBright("Your sentence is incorrect❌"));
@@ -229,11 +231,11 @@ async function selectLevel() {
 			 break;
 
 			case "Random Words":
-				await startTypingTest("Comedy, Stubborn, Biography", 120);
+				await startTypingTest("Comedy, Stubborn, Biography", 80);
 				break;
 
 				case "Technical Text":
-				await startTypingTest("Programming is fun but challenging", 180);
+				await startTypingTest("Programming is fun but challenging", 100);
 				break;
 				default:
 					console.log(chalk.red("Invalid level selected."));
